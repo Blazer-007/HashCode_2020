@@ -6,7 +6,7 @@
 #pragma GCC target("sse2")
 
 #include <bits/stdc++.h>
-#define fastio 		ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+#define fastio 		ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);cin.exceptions(cin.failbit);
 #define mp(i,j)     make_pair(i,j)
 #define inf         0x3f3f3f3f
 //#define INF         0x3f3f3f3f3f3f3f3fLL
@@ -69,16 +69,77 @@ using namespace std;
 // return (f[n]*((InverseEuler(f[r], MOD) * InverseEuler(f[n-r], MOD)) % MOD)) % MOD;
 //}
 
+bool comp(pair<ll,ll> &p1,pair<ll,ll> &p2){
+	return p1.FF>p2.FF ;
+}
 
 void solution(){
+	ll b,l,d;
+	cin>>b>>l>>d;
+	vi score(b);
+	loop(i,0,b){
+		cin>>score[i];
+	}
+	vector<pair<ll,pair<ll,ll> > > library;
+	vector<vector<pair<ll,ll> > > lbr;
+	loop(i,0,l){
+		ll bl,sign,scan;
+		cin>>bl>>sign>>scan;
+		pair<ll,ll> p1;
+		p1 = mp(scan,i);
+		pair<ll,pair<ll,ll> > p2;
+		p2 = mp(sign,p1);
+		library.pb(p2);
+		vector<pair<ll,ll> > vec;
+		loop(i,0,bl){
+			ll idx;
+			cin>>idx;
+			vec.pb({score[idx],idx});
+		}
+		sort(all(vec),comp);
+		lbr.pb(vec);
+	} 
+	sort(all(library));
+	ll signup = 0;
+	ll sum = 0;
+	loop(i,0,l){
+		sum += library[i].FF;
+		if(sum>d){
+			break;
+		}else {
+			signup++;
+		}
+	}
+	cout<<signup<<endl;
+	ll summ = 0;
+	loop(i,0,signup){
+		ll lib_id = library[i].SS.SS , scan = library[i].SS.FF ;
+		cout<<lib_id<<" ";
+		summ += library[i].FF;
+		ll rem = d - summ ;
+		ll books = sz(lbr[lib_id]);
+		ll sizee;
+		if((rem*scan)>=books){
+			cout<<books<<endl;
+			sizee = books;
+		}else{
+			ll bks = rem*scan ;
+			sizee = bks;
+			cout<<bks<<endl;
+		}
+		loop(i,0,sizee){
+			cout<<lbr[lib_id][i].SS<<" ";
+		}
+		cout<<endl;
+	}
 	
 }
 
 signed main(){
-//    #ifndef ONLINE_JUDGE
-//    freopen("input.txt","r",stdin);
-//    freopen("output.txt","w",stdout);
-//    #endif
+    #ifndef ONLINE_JUDGE
+    freopen("E:/COMPUTER/CP Codes/Hash Code/d_tough_choices.txt","r",stdin);
+    freopen("E:/COMPUTER/CP Codes/Hash Code/d_tough_choices_output1.txt","w",stdout);
+    #endif
     fastio;
 //    f[0] = 1;
 //	for(int i = 1 ; i <= 100000 ; i++)
@@ -86,7 +147,7 @@ signed main(){
 //    clock_t time_req;
     //code to be written here
     int t=1;
-    cin>>t;
+//    cin>>t;
     for(int i=1;i<=t;i++){
     	//cout<<"Case #"<<i<<":";
     	solution();
